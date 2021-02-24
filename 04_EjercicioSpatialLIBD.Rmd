@@ -1,0 +1,28 @@
+---
+title: "04_EjercicioSpatialLIBD"
+author: "Paulina Rosales B"
+date: "24/2/2021"
+output: html_document
+---
+**Nota:** Archivos PDF con las figuras resultantes del ejercicio se encuentran en la carpeta *"figuras* del repositorio actual.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+## Descarguemos unos datos de spatialLIBD
+sce_layer <- spatialLIBD::fetch_data("sce_layer")
+
+sce_layer
+
+## Revisemos el tamaño de este objeto
+pryr::object_size(sce_layer)
+
+## Explorar datos
+iSEE::iSEE(sce_layer)
+
+
+```
+
+1. **Explora en con un heatmap la expresión de los genes MOBP, MBP y PCP4. Si hacemos un clustering (agrupamos los genes), ¿cúales genes se parecen más?** MOBP (ID: ENSG00000168314) y MBP (ID: ENSG00000197971), sujeto al parámetro de clusterización. Notamos que al utilizar manhattan cambiaban las relaciones entre los genes.
+
+2. **¿En qué capas se expresan más los genes MOBP y MBP?**  En la capa WM (White Matter).
+
+
