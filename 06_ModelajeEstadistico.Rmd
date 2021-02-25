@@ -1,0 +1,58 @@
+---
+title: "06_ModelajeEstadistico"
+author: "Paulina Rosales B"
+date: "25/2/2021"
+output: html_document
+---
+Ejemplos básicos en clase
+
+```{r}
+## ?model.matrix
+## model.matrix(log(Y) ~ log(X_1) * log(X_2)) para variables X dependientes
+## model.matrix(log(Y) ~ log(X_1) + log(X_2)) para variables X independientes
+mat <- with(trees, model.matrix(log(Volume) ~ log(Height) + log(Girth)))
+mat
+```
+```{r}
+## Datos de ejemplo
+(sampleData <- data.frame(
+    genotype = rep(c("A", "B"), each = 4),
+    treatment = rep(c("ctrl", "trt"), 4)
+))
+```
+```{r}
+## Creemos las imágenes usando ExploreModelMatrix
+vd <- ExploreModelMatrix::VisualizeDesign(
+    sampleData = sampleData,
+		# Misma sintaxis que regresión lienal pero sin Y porque la Y cambia de acuerdo al gen
+    designFormula = ~ genotype + treatment,
+    textSizeFitted = 4
+)
+
+## Veamos las imágenes
+cowplot::plot_grid(plotlist = vd$plotlist)
+```
+```{r}
+mod <- model.matrix(~ genotype + treatment, data = sampleData)
+mod
+```
+```{r}
+## Cambiar la variable de referencia en por comandos
+sampleData$genotype
+factor(sampleData$genotype)
+factor(sampleData$genotype, levels = c("B", "A"))
+```
+
+```{r message=FALSE, warning=FALSE, include=TRUE}
+library(ExploreModelMatrix)
+## Usaremos shiny otra ves
+app <- ExploreModelMatrix(
+    sampleData = sampleData,
+    designFormula = ~ genotype + treatment
+)
+if (interactive()) shiny::runApp(app)
+```
+
+
+
+
