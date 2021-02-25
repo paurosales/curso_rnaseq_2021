@@ -6,7 +6,7 @@ sessioninfo :: sesion_info()
 print("Soy Pau")
 
 # Crear directorio para figuras
-dir.create(here :: here("fuguras"), showWarnings = FALSE)
+dir.create(here :: here("figuras"), showWarnings = FALSE)
 pdf(here :: here("figuras", "mtcars_gear_vs_mpg.pfd"))
 library("ggplot2")
 

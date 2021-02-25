@@ -1,7 +1,7 @@
 ---
-title: "07_ExploreModelMatrix"
+title: "Paquete ExploreModelMatrix"
 author: "Paulina Rosales B"
-date: "25/2/2021"
+date: "25de febrero, 2021"
 output: html_document
 ---
 
