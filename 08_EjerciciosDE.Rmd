@@ -13,6 +13,7 @@ library("recount3")
 
 human_projects <- available_projects()
 ```
+
 ```{r message=FALSE}
 rse_gene_SRP045638 <- create_rse(
     subset(
@@ -243,6 +244,7 @@ col.group <- as.character(col.group)
 ## MDS por grupos de edad
 plotMDS(vGene$E, labels = df$AgeGroup, col = col.group)
 ```
+
 ```{r warning=FALSE}
 ## Conviertiendo los valores de Sex a colores
 col.sex <- df$Sex
@@ -253,6 +255,7 @@ col.sex <- as.character(col.sex)
 ## MDS por sexo
 plotMDS(vGene$E, labels = df$Sex, col = col.sex)
 ```
+
 ```{r "Ejercicio pheatmap"}
 # Obtener los nombres a partir de los IDs en el arreglo general
 namesIndex <- match(rownames(exprs_heatmap), de_results$gene_id)
