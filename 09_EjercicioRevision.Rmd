@@ -1,0 +1,113 @@
+---
+title: "Ejercicio revisión final"
+author: "Paulina Rosales B"
+date: "2/28/2021"
+output: html_document
+---
+
+- ¿Hay diferencias en `totalAssignedGene` o `mitoRate` entre los grupos de diagnosis (`PrimaryDx`)?
+
+- Grafica la expresión de SNAP25 para cada grupo de diagnosis.
+
+
+- Sugiere un modelo estadistico que podríamos usar en una análisis de expresión diferencial. Verifica que si sea un modelo full rank. ¿Cúal sería el o los coeficientes de interés?
+
+```{r}
+speaqeasy_data <- file.path(tempdir(), "rse_speaqeasy.RData")
+download.file("https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/rse_speaqeasy.RData?raw=true", speaqeasy_data, mode = "wb")
+library("SummarizedExperiment")
+load(speaqeasy_data, verbose = TRUE)
+```
+
+```{r}
+rse_gene
+```
+
+
+```{r}
+#
+rse_gene$totalAssignedGene
+```
+
+```{r}
+# 
+rse_gene$mitoRate
+```
+
+```{r}
+rse_gene$PrimaryDx
+```
+
+```{r}
+library("ggplot2")
+ggplot(as.data.frame(colData(rse_gene)), aes(y = mitoRate, x = PrimaryDx)) +
+    geom_boxplot() +
+    theme_bw(base_size = 20) +
+    ylab("mitoRate") +
+    xlab("PrimaryDx")
+```
+
+```{r}
+library("ggplot2")
+ggplot(as.data.frame(colData(rse_gene)), aes(y = totalAssignedGene, x = PrimaryDx)) +
+    geom_boxplot() +
+    theme_bw(base_size = 20) +
+    ylab("totalAssignedGene") +
+    xlab("PrimaryDx")
+```
+
+```{r}
+head(assay(rse_gene))
+```
+
+```{r}
+gene <- "SNAP25"
+list <- rowData(rse_gene)$Symbol
+index <- match(gene, list)
+index
+```
+
+```{r}
+rse_gene[index]
+```
+
+```{r, eval=FALSE}
+iSEE::iSEE(rse_gene[index])
+```
+
+```{r}
+colnames(colData(rse_gene))
+```
+
+
+```{r}
+library("edgeR") # BiocManager::install("edgeR", update = FALSE)
+```
+
+
+```{r}
+dge <- DGEList(
+    counts = assay(rse_gene, "counts"),
+    genes = rowData(rse_gene)
+)
+dge <- calcNormFactors(dge)
+```
+
+
+
+
+```{r}
+mod <- model.matrix(~ PrimaryDx + totalAssignedGene + mitoRate + numReads,
+    data = colData(rse_gene)
+)
+colnames(mod)
+```
+
+
+```{r}
+library("limma")
+```
+
+```{r}
+vGene <- voom(dge, mod, plot = TRUE)
+```
